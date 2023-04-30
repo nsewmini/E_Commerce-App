@@ -7,6 +7,7 @@ import authRoutes from './route/authRoutes.js';
 import categoryRoutes from "./route/categoryRoutes.js";
 import productRoutes from "./route/productRoutes.js";
 import cors from 'cors';
+import path  from path ;
 Error.stackTraceLimit = 20; // set stack trace limit to 20
 Error.prepareStackTrace = function(error, stackTrace) {
     return stackTrace.map(frame => {
@@ -24,13 +25,10 @@ connectDB();
 const app = express();
 
 //middleware
-app.use(cors(
-  {
-    origin: 'http://localhost:3000',
-  }
-));
+app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(express.static(path.join(__dirname,'./client/build')));
 
 
 //routing
@@ -39,9 +37,13 @@ app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/product", productRoutes);
 
 //rest api
-app.get('/', (req, res) => {
-    res.send("<h1>Welcome To the Ecommerce Website</h1>");
-});
+// app.get('/', (req, res) => {
+//     res.send("<h1>Welcome To the Ecommerce Website</h1>");
+// });
+
+app.use("*",function(req,res){
+  res.sendFile(path.join(__dirname,'./client/build/index.html'));
+})
 
 const port = process.env.PORT || 8080;
 
