@@ -1,3 +1,3 @@
 # SF-E-commerce
 
-Need workload matrix
+Partially done the documentation 
